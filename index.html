@@ -93,7 +93,7 @@
   <p class="sub">
     Alle 1459 handelbaren Items des QoL-Markts mit Kauf- und Verkaufspreis
     in Coins. Grundlage ist die Preisliste <code>2026-10-21-3e61a9f0</code>
-    (<code>scripts/prices.js</code>), Stand 21. Oktober 2026 um 20:51.
+    (<code>scripts/prices.js</code>), Stand <span id="stand">21. Oktober 2026 um 20:51</span>.
   </p>
   <div class="stats">
     <div class="stat"><b>1459</b><span>Items</span></div>
@@ -184,6 +184,46 @@ function visible() {
   });
 }
 
+// Live-Werte: live.json wird vom Host alle Minute neu geschrieben und hier
+// alle 15 s nachgeladen. Die Preise selbst stehen fest im HTML; nur Faktor,
+// Bestand und Trades kommen aus der Datei.
+const LIVE = new Map();
+const standFmt = new Intl.DateTimeFormat("de-DE", {
+  dateStyle: "medium", timeStyle: "medium", timeZone: "Europe/Berlin"
+});
+
+function applyLive(items) {
+  LIVE.clear();
+  for (const it of items || []) LIVE.set(it.id, it);
+  for (const r of DATA) {
+    const l = LIVE.get(r.id.replace("minecraft:", ""));
+    if (!l) continue;
+    r.m = Number(l.m);
+    r.stock = Number(l.stock);
+    r.target = Number(l.target) || 500;
+    r.trades = Number(l.trades) || 0;
+    r.live = true;
+    r.pct = r.stock === null || !r.target ? null : (r.stock / r.target) * 100;
+    const buyCents = Math.max(1, Math.round(r.buy * 100 * r.m));
+    r.buyNow = buyCents / 100;
+    r.sellNow = r.sell === 0 ? 0 : Math.floor(buyCents / 2) / 100;
+  }
+}
+
+async function refreshLive() {
+  try {
+    const res = await fetch("live.json?ts=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    applyLive(data.rows || []);
+    if (data.ts) {
+      const el = document.getElementById("stand");
+      if (el) el.textContent = standFmt.format(new Date(data.ts));
+    }
+    render();
+  } catch (e) { /* Seite bleibt mit eingebauten Werten nutzbar */ }
+}
+
 function render() {
   const rows = visible();
   tbody.innerHTML = rows.map((r) => {
@@ -217,6 +257,8 @@ document.querySelectorAll("thead th").forEach((th) => {
   });
 });
 
+refreshLive();
+setInterval(refreshLive, 15000);
 $("#q").addEventListener("input", (e) => { query = e.target.value; render(); });
 $("#mode").addEventListener("change", (e) => { mode = e.target.value; render(); });
 $("#csv").addEventListener("click", () => {
