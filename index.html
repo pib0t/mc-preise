@@ -89,7 +89,7 @@
   <p class="sub">
     Alle 617 handelbaren Items des QoL-Markts mit Kauf- und Verkaufspreis
     in Coins. Grundlage ist die Preisliste <code>2026-10-21-ea497a5b</code>
-    (<code>scripts/prices.js</code>), Stand 21. Oktober 2026 um 19:03.
+    (<code>scripts/prices.js</code>), Stand 21. Oktober 2026 um 19:13.
   </p>
   <div class="stats">
     <div class="stat"><b>617</b><span>Items</span></div>
@@ -151,7 +151,8 @@ const $ = (s) => document.querySelector(s);
 const tbody = $("#t tbody");
 let sortKey = "name", sortDir = 1, query = "", mode = "all";
 
-const nf = new Intl.NumberFormat("de-DE");
+// Preise immer mit zwei Nachkommastellen (Ledger rechnet in Cent).
+const nf = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 function visible() {
