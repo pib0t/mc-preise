@@ -225,7 +225,7 @@ $("#csv").addEventListener("click", () => {
   const body = visible().map((r) => [r.name, r.id, r.buy, r.sell, r.m,
     r.live ? r.buyNow : "", r.live ? r.sellNow : "", r.stock ?? "",
     r.pct === null ? "" : Math.round(r.pct), r.trades]
-  const a = document.createElement("a");
+    .map((v) => '"' + String(v).replace(/"/g, '""') + '"').join(",")).join("\n");
   a.href = URL.createObjectURL(new Blob([head + body], { type: "text/csv;charset=utf-8" }));
   a.download = "minecraft-preise.csv";
   a.click();
