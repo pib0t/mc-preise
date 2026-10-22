@@ -141,12 +141,12 @@
 <h2><span class="num">2.</span> Dein erster Handel</h2>
 <div class="step"><div class="n">1</div><div>
   <h3 style="margin:0">Guthaben prüfen</h3>
-  <p><code>/qol:balance</code> zeigt deine Coins, zum Beispiel
+  <p><code>/balance</code> zeigt deine Coins, zum Beispiel
   <span class="k-gold">1.234,56 Coins</span>.</p>
 </div></div>
 <div class="step"><div class="n">2</div><div>
   <h3 style="margin:0">Preis nachschauen</h3>
-  <p><code>/qol:prices holz</code> zeigt alle Items, in denen „holz“ vorkommt –
+  <p><code>/prices holz</code> zeigt alle Items, in denen „holz“ vorkommt –
   mit Kaufpreis, Verkaufspreis und Faktor. Ohne Suchwort kommt die ganze Liste
   (nach und nach im Chat).</p>
   <p style="color:var(--muted);font-size:14px">Item-Namen schreibst du
@@ -156,16 +156,16 @@
 </div></div>
 <div class="step"><div class="n">3</div><div>
   <h3 style="margin:0">Verkaufen</h3>
-  <p><code>/qol:sell oak_log 64</code> verkauft 64 Eichenstämme aus dem Inventar.
+  <p><code>/sell oak_log 64</code> verkauft 64 Eichenstämme aus dem Inventar.
   Du kannst auch deutsche Namen benutzen. Hast du weniger im Inventar, wird nur
   das verkauft, was du hast – der Chat sagt dir das.</p>
-  <p>Schneller geht es mit <code>/qol:sellhand</code>: Es verkauft das Item,
+  <p>Schneller geht es mit <code>/sellhand</code>: Es verkauft das Item,
   das du gerade in der Hand hältst (ganzer Stack). Mit
-  <code>/qol:sellhand 8</code> nur 8 Stück, der Rest bleibt in der Hand.</p>
+  <code>/sellhand 8</code> nur 8 Stück, der Rest bleibt in der Hand.</p>
 </div></div>
 <div class="step"><div class="n">4</div><div>
   <h3 style="margin:0">Kaufen</h3>
-  <p><code>/qol:buy 16 torch</code> kauft 16 Fackeln. Wichtig: erst die
+  <p><code>/buy 16 torch</code> kauft 16 Fackeln. Wichtig: erst die
   <strong>Menge</strong>, dann das Item (anders als beim Verkaufen!).</p>
 </div></div>
 
@@ -176,17 +176,21 @@
 </div>
 
 <h2><span class="num">3.</span> Alle Befehle</h2>
+<p>Die Befehle funktionieren <strong>mit und ohne</strong> <code>qol:</code> davor –
+<code>/sell</code> ist dasselbe wie <code>/qol:sell</code>. Hier steht immer die
+kurze Form. Falls ein kurzer Befehl mal nicht klappt (z. B. <code>/help</code>,
+weil das Spiel selbst eins hat), nimm die lange Form <code>/qol:help</code>.</p>
 <h3>Geld und Markt</h3>
 <table>
   <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
   <tbody>
-    <tr><td class="cmd"><code>/qol:balance</code></td><td>Dein Guthaben anzeigen.</td></tr>
-    <tr><td class="cmd"><code>/qol:prices [suchwort]</code></td><td>Preise anzeigen, optional gefiltert (z. B. <code>/qol:prices wood</code>).</td></tr>
-    <tr><td class="cmd"><code>/qol:market [item]</code></td><td>Marktstatus eines Items: Lagerbestand, Faktor, wie viel gekauft/verkauft wurde. Ohne Item: die 8 meistgehandelten Items.</td></tr>
-    <tr><td class="cmd"><code>/qol:sell &lt;item&gt; &lt;menge&gt;</code></td><td>Items aus dem Inventar verkaufen (1–10.000).</td></tr>
-    <tr><td class="cmd"><code>/qol:sellhand [menge]</code></td><td>Das Item in der Hand verkaufen – ohne Menge den ganzen Stack.</td></tr>
-    <tr><td class="cmd"><code>/qol:buy &lt;menge&gt; &lt;item&gt;</code></td><td>Items kaufen (1–10.000).</td></tr>
-    <tr><td class="cmd"><code>/qol:pay &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins an einen anderen Spieler überweisen, z. B. <code>/qol:pay Alex 12.50</code>.</td></tr>
+    <tr><td class="cmd"><code>/balance</code></td><td>Dein Guthaben anzeigen.</td></tr>
+    <tr><td class="cmd"><code>/prices [suchwort]</code></td><td>Preise anzeigen, optional gefiltert (z. B. <code>/prices wood</code>).</td></tr>
+    <tr><td class="cmd"><code>/market [item]</code></td><td>Marktstatus eines Items: Lagerbestand, Faktor, wie viel gekauft/verkauft wurde. Ohne Item: die 8 meistgehandelten Items.</td></tr>
+    <tr><td class="cmd"><code>/sell &lt;item&gt; &lt;menge&gt;</code></td><td>Items aus dem Inventar verkaufen (1–10.000).</td></tr>
+    <tr><td class="cmd"><code>/sellhand [menge]</code></td><td>Das Item in der Hand verkaufen – ohne Menge den ganzen Stack.</td></tr>
+    <tr><td class="cmd"><code>/buy &lt;menge&gt; &lt;item&gt;</code></td><td>Items kaufen (1–10.000).</td></tr>
+    <tr><td class="cmd"><code>/pay &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins an einen anderen Spieler überweisen, z. B. <code>/pay Alex 12.50</code>.</td></tr>
   </tbody>
 </table>
 
@@ -194,12 +198,12 @@
 <table>
   <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
   <tbody>
-    <tr><td class="cmd"><code>/qol:sethome</code></td><td>Setzt dein Home an deiner aktuellen Position.</td></tr>
-    <tr><td class="cmd"><code>/qol:home</code></td><td>Teleportiert dich zu deinem Home – auch aus einer anderen Welt.</td></tr>
-    <tr><td class="cmd"><code>/qol:setexpedition</code></td><td>Setzt einen zweiten Punkt (Expedition), z. B. für eine Farm weit weg.</td></tr>
-    <tr><td class="cmd"><code>/qol:expedition</code></td><td>Teleportiert dich zum Expeditionspunkt.</td></tr>
-    <tr><td class="cmd"><code>/qol:tpa &lt;spieler&gt;</code></td><td>Fragt einen Spieler, ob du zu ihm darfst. Die Anfrage gilt 2 Minuten.</td></tr>
-    <tr><td class="cmd"><code>/qol:tpaccept</code> / <code>/qol:tpdeny</code></td><td>Anfrage annehmen oder ablehnen.</td></tr>
+    <tr><td class="cmd"><code>/sethome</code></td><td>Setzt dein Home an deiner aktuellen Position.</td></tr>
+    <tr><td class="cmd"><code>/home</code></td><td>Teleportiert dich zu deinem Home – auch aus einer anderen Welt.</td></tr>
+    <tr><td class="cmd"><code>/setexpedition</code></td><td>Setzt einen zweiten Punkt (Expedition), z. B. für eine Farm weit weg.</td></tr>
+    <tr><td class="cmd"><code>/expedition</code></td><td>Teleportiert dich zum Expeditionspunkt.</td></tr>
+    <tr><td class="cmd"><code>/tpa &lt;spieler&gt;</code></td><td>Fragt einen Spieler, ob du zu ihm darfst. Die Anfrage gilt 2 Minuten.</td></tr>
+    <tr><td class="cmd"><code>/tpaccept</code> / <code>/tpdeny</code></td><td>Anfrage annehmen oder ablehnen.</td></tr>
   </tbody>
 </table>
 
@@ -207,8 +211,8 @@
 <table>
   <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
   <tbody>
-    <tr><td class="cmd"><code>/qol:top [kategorie]</code></td><td>Die Top 5: <code>blocks</code> (abgebaute Blöcke), <code>kills</code> (Mobs), <code>walk</code> (gelaufen), <code>pkills</code> (Spieler), <code>deaths</code> (Tode), <code>time</code> (Spielzeit).</td></tr>
-    <tr><td class="cmd"><code>/qol:stats [spieler]</code></td><td>Alle sechs Werte eines Spielers.</td></tr>
+    <tr><td class="cmd"><code>/top [kategorie]</code></td><td>Die Top 5: <code>blocks</code> (abgebaute Blöcke), <code>kills</code> (Mobs), <code>walk</code> (gelaufen), <code>pkills</code> (Spieler), <code>deaths</code> (Tode), <code>time</code> (Spielzeit).</td></tr>
+    <tr><td class="cmd"><code>/stats [spieler]</code></td><td>Alle sechs Werte eines Spielers.</td></tr>
   </tbody>
 </table>
 <p>Die Sidebar rechts zeigt automatisch die Top 10 und wechselt alle 10 Sekunden
@@ -218,10 +222,10 @@ die Kategorie. Wer sie fest einstellen darf, regelt der Server-Admin.</p>
 <table>
   <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
   <tbody>
-    <tr><td class="cmd"><code>/qol:grant &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins vergeben oder abziehen (negativer Betrag). Wird im Log festgehalten.</td></tr>
-    <tr><td class="cmd"><code>/qol:marketreset JA</code></td><td>Notfall: Lager und Preis <strong>aller</strong> Items zurücksetzen. Sichert vorher eine Kopie.</td></tr>
-    <tr><td class="cmd"><code>/qol:board &lt;kategorie|auto|aus&gt;</code></td><td>Sidebar fest einstellen oder ausschalten.</td></tr>
-    <tr><td class="cmd"><code>/qol:selftest</code></td><td>Prüft die Rechenlogik des Markts (67 Tests).</td></tr>
+    <tr><td class="cmd"><code>/grant &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins vergeben oder abziehen (negativer Betrag). Wird im Log festgehalten.</td></tr>
+    <tr><td class="cmd"><code>/marketreset JA</code></td><td>Notfall: Lager und Preis <strong>aller</strong> Items zurücksetzen. Sichert vorher eine Kopie.</td></tr>
+    <tr><td class="cmd"><code>/board &lt;kategorie|auto|aus&gt;</code></td><td>Sidebar fest einstellen oder ausschalten.</td></tr>
+    <tr><td class="cmd"><code>/selftest</code></td><td>Prüft die Rechenlogik des Markts (65 Tests).</td></tr>
   </tbody>
 </table>
 <p style="color:var(--muted);font-size:14px">Diese Befehle funktionieren nur mit
@@ -283,7 +287,7 @@ Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
     <h3 class="k-green">Erlaubt und gewollt</h3>
     <ul>
       <li>Farmen, abbauen, sammeln und verkaufen – so viel du willst.</li>
-      <li>Handeln mit anderen Spielern (auch über <code>/qol:pay</code>).</li>
+      <li>Handeln mit anderen Spielern (auch über <code>/pay</code>).</li>
       <li>Preise beobachten und dann verkaufen, wenn sie hoch sind.</li>
       <li>Items kaufen, solange sie billig sind (volles Lager), und später
       verkaufen, wenn der Preis wieder gestiegen ist. Das ist ausdrücklich
@@ -311,7 +315,7 @@ Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
   <li>Der Kauf wird abgelehnt, wenn dein Inventar nicht genug Platz hat –
   abgebucht wird dann nichts.</li>
   <li>Coins werden auf den Cent genau gespeichert. Angezeigt wird mit Komma
-  (12,34 Coins), eingegeben mit Punkt (<code>/qol:pay Alex 12.50</code>).</li>
+  (12,34 Coins), eingegeben mit Punkt (<code>/pay Alex 12.50</code>).</li>
   <li>Überweisungen gehen von 0,01 bis 1.000.000,00 Coins; an dich selbst
   überweisen geht nicht.</li>
 </ul>
