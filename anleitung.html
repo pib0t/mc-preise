@@ -117,8 +117,8 @@
   <div class="card">
     <h3>Coins sind Geld</h3>
     <p>Jeder Spieler hat ein eigenes Konto. Du startest mit 0,00 Coins.
-    Coins bekommst du nur durch <strong>Verkaufen</strong> (oder wenn dir jemand
-    etwas überweist).</p>
+    Coins bekommst du nur durch <strong>Verkaufen</strong>, durch eine Überweisung
+    von anderen Spielern oder von einem Admin.</p>
   </div>
   <div class="card">
     <h3>Der Markt hat ein Lager</h3>
@@ -149,6 +149,10 @@
   <p><code>/qol:prices holz</code> zeigt alle Items, in denen „holz“ vorkommt –
   mit Kaufpreis, Verkaufspreis und Faktor. Ohne Suchwort kommt die ganze Liste
   (nach und nach im Chat).</p>
+  <p style="color:var(--muted);font-size:14px">Item-Namen schreibst du
+  <strong>ohne</strong> <code>minecraft:</code> – entweder englisch
+  (<code>oak_log</code>, <code>torch</code>) oder deutsch
+  (<code>eichenstamm</code>, <code>fackel</code>).</p>
 </div></div>
 <div class="step"><div class="n">3</div><div>
   <h3 style="margin:0">Verkaufen</h3>
@@ -304,8 +308,8 @@ Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
   Admin-Blöcke und alles, was sich nicht eindeutig einem Preis zuordnen lässt.</li>
   <li>Der Kauf wird abgelehnt, wenn dein Inventar nicht genug Platz hat –
   abgebucht wird dann nichts.</li>
-  <li>Coins werden auf den Cent genau gespeichert, angezeigt mit zwei
-  Nachkommastellen (Komma oder Punkt sind beim Eingeben beide okay).</li>
+  <li>Coins werden auf den Cent genau gespeichert. Angezeigt wird mit Komma
+  (12,34 Coins), eingegeben mit Punkt (<code>/qol:pay Alex 12.50</code>).</li>
   <li>Überweisungen gehen von 0,01 bis 1.000.000,00 Coins; an dich selbst
   überweisen geht nicht.</li>
 </ul>
