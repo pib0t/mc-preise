@@ -125,7 +125,7 @@
   <p class="sub">
     Alle 1459 handelbaren Items des QoL-Markts mit Kauf- und Verkaufspreis
     in Coins. Grundlage ist die Preisliste <code>2026-10-21-3e61a9f0</code>
-    (<code>scripts/prices.js</code>), Stand <span id="stand">22. Oktober 2026 um 11:04</span>.
+    (<code>scripts/prices.js</code>), Stand <span id="stand">22. Oktober 2026 um 11:16</span>.
   </p>
   <div class="stats">
     <div class="stat"><b>1459</b><span>Items</span></div>
@@ -307,11 +307,14 @@ const dtFmt = new Intl.DateTimeFormat("de-DE", {
   day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
 });
 const intFmt = new Intl.NumberFormat("de-DE");
-let TRADES = null, TRADES_FAILED = false, detailRow = null, detailFocus = null;
+let TRADES = null, TRADES_FAILED = 0, detailRow = null, detailFocus = null;
 
 async function loadTrades() {
   if (TRADES) return TRADES;
-  if (TRADES_FAILED) throw new Error("trades.json nicht verfuegbar");
+  // Nach einem Fehlschlag 30 s sperren, danach beim naechsten Klick neu versuchen.
+  if (TRADES_FAILED && Date.now() - TRADES_FAILED < 30000) {
+    throw new Error("trades.json nicht verfuegbar");
+  }
   try {
     const res = await fetch("trades.json?ts=" + Date.now(), { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
@@ -319,7 +322,7 @@ async function loadTrades() {
     TRADES = data && data.items ? data.items : {};
     return TRADES;
   } catch (e) {
-    TRADES_FAILED = true;
+    TRADES_FAILED = Date.now();
     throw e;
   }
 }
@@ -428,6 +431,20 @@ tbody.addEventListener("keydown", (e) => {
 });
 $("#d-close").addEventListener("click", closeDetail);
 detailEl.addEventListener("click", (e) => { if (e.target.dataset.close !== undefined) closeDetail(); });
+// Fokus im Drawer halten: Tab laeuft zwischen den Elementen des Dialogs um.
+detailEl.addEventListener("keydown", (e) => {
+  if (e.key !== "Tab") return;
+  const nodes = [...detailEl.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  )].filter((n) => !n.disabled && n.offsetParent !== null);
+  if (!nodes.length) return;
+  const firstNode = nodes[0], lastNode = nodes[nodes.length - 1];
+  if (e.shiftKey && document.activeElement === firstNode) {
+    e.preventDefault(); lastNode.focus();
+  } else if (!e.shiftKey && document.activeElement === lastNode) {
+    e.preventDefault(); firstNode.focus();
+  }
+});
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
 
 document.querySelectorAll("thead th").forEach((th) => {
