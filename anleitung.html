@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Komplette Anleitung für den Minecraft-Bedrock-Server 19133: Coins, Markt, Befehle, Regeln und Tipps – einfach erklärt.">
+<meta name="theme-color" content="#0f1115">
+<title>Anleitung · Minecraft Bedrock 19133</title>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --panel2: #1d222b; --line: #2a303c;
+    --text: #e7ebf3; --muted: #98a2b3; --gold: #f2c14e; --green: #55c57a;
+    --red: #e5595b; --blue: #6aa9ff; --violet: #b98cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif; }
+  body { padding: 24px clamp(12px, 3vw, 40px) 64px; line-height: 1.65; }
+  main, header, footer { max-width: 980px; margin: 0 auto; }
+  nav { max-width: 980px; margin: 0 auto 22px; display: flex; gap: 8px; flex-wrap: wrap;
+    font-size: 14px; }
+  nav a { color: var(--muted); text-decoration: none; padding: 8px 14px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+  nav a:hover { color: var(--text); border-color: var(--green); }
+  nav a[aria-current="page"] { color: #0f1115; background: var(--green);
+    border-color: var(--green); font-weight: 700; }
+  h1 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 34px); line-height: 1.2; }
+  h1 span { color: var(--green); }
+  .lead { color: var(--muted); font-size: 16px; margin: 0 0 22px; }
+  h2 { margin: 42px 0 10px; font-size: clamp(19px, 2.4vw, 24px); }
+  h2 .num { color: var(--green); font-variant-numeric: tabular-nums; }
+  h3 { margin: 24px 0 6px; font-size: 17px; }
+  p { margin: 8px 0; }
+  code { background: var(--panel2); border: 1px solid var(--line); border-radius: 5px;
+    padding: 1px 6px; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em; color: #cfd7e6; }
+  .grid { display: grid; gap: 12px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; }
+  .card h3 { margin: 0 0 4px; font-size: 16px; }
+  .card p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .big { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .k-green { color: var(--green); } .k-gold { color: var(--gold); }
+  .k-red { color: var(--red); } .k-blue { color: var(--blue); }
+  .note { margin: 18px 0; padding: 12px 16px; background: rgba(106,169,255,.08);
+    border: 1px solid rgba(106,169,255,.3); border-left: 3px solid var(--blue);
+    border-radius: 8px; font-size: 14.5px; }
+  .warn { border-color: rgba(229,89,91,.35); border-left-color: var(--red);
+    background: rgba(229,89,91,.08); }
+  .ok { border-color: rgba(85,197,122,.35); border-left-color: var(--green);
+    background: rgba(85,197,122,.08); }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 12px 0;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #222833;
+    vertical-align: top; }
+  th { background: #202631; color: var(--muted); font-size: 12px; letter-spacing: .6px;
+    text-transform: uppercase; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.cmd { white-space: nowrap; }
+  td.cmd code { background: transparent; border: 0; padding: 0; color: var(--gold); }
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px; margin: 10px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  details[open] summary { margin-bottom: 8px; }
+  details p, details li { color: var(--muted); font-size: 14.5px; }
+  ul, ol { margin: 8px 0 8px 20px; padding: 0; }
+  li { margin: 4px 0; }
+  .step { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0; }
+  .step .n { flex: 0 0 30px; height: 30px; border-radius: 50%; background: var(--panel2);
+    border: 1px solid var(--line); color: var(--green); font-weight: 700;
+    display: grid; place-items: center; font-size: 14px; }
+  .price { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0; }
+  .price div { background: var(--panel2); border: 1px solid var(--line); border-radius: 9px;
+    padding: 8px 12px; font-variant-numeric: tabular-nums; }
+  .price b { display: block; font-size: 19px; }
+  .price span { color: var(--muted); font-size: 11.5px; text-transform: uppercase;
+    letter-spacing: .5px; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 12.5px; }
+  footer a { color: var(--blue); }
+  @media print {
+    body { background: #fff; color: #000; }
+    nav, footer { display: none; }
+    .card, table, details, .note { background: #fff; border-color: #ccc; color: #000; }
+    .card p, details p, details li, .lead { color: #333; }
+    th { background: #eee; color: #000; }
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Seiten">
+  <a href="./">Preisliste</a>
+  <a href="./anleitung.html" aria-current="page">Anleitung</a>
+</nav>
+
+<header>
+  <h1>Anleitung <span>Minecraft Bedrock 19133</span></h1>
+  <p class="lead">
+    Hier steht alles, was du über Coins, den Markt und die Befehle wissen musst –
+    in einfacher Sprache, mit Beispielen. Du brauchst keine Vorkenntnisse.
+  </p>
+  <div class="grid g3">
+    <div class="card"><div class="big k-gold">1459</div><p>Items kannst du kaufen und verkaufen</p></div>
+    <div class="card"><div class="big k-green">500</div><p>Stück liegen normalerweise im Lager (pro Item)</p></div>
+    <div class="card"><div class="big k-blue">2000</div><p>Stück passen höchstens ins Lager – dann ist voll</p></div>
+    <div class="card"><div class="big k-red">0,05–3,00</div><p>so stark schwankt der Preis (Faktor)</p></div>
+  </div>
+</header>
+
+<main>
+
+<h2><span class="num">1.</span> Das Wichtigste in 30 Sekunden</h2>
+<div class="grid g2">
+  <div class="card">
+    <h3>Coins sind Geld</h3>
+    <p>Jeder Spieler hat ein eigenes Konto. Du startest mit 0,00 Coins.
+    Coins bekommst du nur durch <strong>Verkaufen</strong> (oder wenn dir jemand
+    etwas überweist).</p>
+  </div>
+  <div class="card">
+    <h3>Der Markt hat ein Lager</h3>
+    <p>Verkaufst du viel von einem Item, wird das Lager voll und der Preis sinkt.
+    Kaufst du, wird das Lager leerer und der Preis steigt.</p>
+  </div>
+  <div class="card">
+    <h3>Nichts ist gratis</h3>
+    <p>Ein billiger Preis heißt nicht, dass etwas umsonst ist. Selbst bei
+    Faktor 0,05 kostet jedes Stück mindestens 1 Cent.</p>
+  </div>
+  <div class="card">
+    <h3>Verkauf bringt die Hälfte</h3>
+    <p>Der Verkaufspreis ist immer <strong>höchstens die Hälfte</strong> des
+    Kaufpreises. Billig kaufen und sofort teuer zurückverkaufen funktioniert
+    deshalb nie.</p>
+  </div>
+</div>
+
+<h2><span class="num">2.</span> Dein erster Handel</h2>
+<div class="step"><div class="n">1</div><div>
+  <h3 style="margin:0">Guthaben prüfen</h3>
+  <p><code>/qol:balance</code> zeigt deine Coins, zum Beispiel
+  <span class="k-gold">1.234,56 Coins</span>.</p>
+</div></div>
+<div class="step"><div class="n">2</div><div>
+  <h3 style="margin:0">Preis nachschauen</h3>
+  <p><code>/qol:prices holz</code> zeigt alle Items, in denen „holz“ vorkommt –
+  mit Kaufpreis, Verkaufspreis und Faktor. Ohne Suchwort kommt die ganze Liste
+  (nach und nach im Chat).</p>
+</div></div>
+<div class="step"><div class="n">3</div><div>
+  <h3 style="margin:0">Verkaufen</h3>
+  <p><code>/qol:sell oak_log 64</code> verkauft 64 Eichenstämme aus dem Inventar.
+  Du kannst auch deutsche Namen benutzen. Hast du weniger im Inventar, wird nur
+  das verkauft, was du hast – der Chat sagt dir das.</p>
+  <p>Schneller geht es mit <code>/qol:sellhand</code>: Es verkauft das Item,
+  das du gerade in der Hand hältst (ganzer Stack). Mit
+  <code>/qol:sellhand 8</code> nur 8 Stück, der Rest bleibt in der Hand.</p>
+</div></div>
+<div class="step"><div class="n">4</div><div>
+  <h3 style="margin:0">Kaufen</h3>
+  <p><code>/qol:buy 16 torch</code> kauft 16 Fackeln. Wichtig: erst die
+  <strong>Menge</strong>, dann das Item (anders als beim Verkaufen!).</p>
+</div></div>
+
+<div class="note ok">
+  <strong>Beispiel:</strong> Ein Verkauf von 64 Bambus bei Faktor 0,45 bringt
+  14,08 Coins. Verkaufst du sehr viel Bambus,
+  sinkt der Preis – beim nächsten Mal gibt es weniger.
+</div>
+
+<h2><span class="num">3.</span> Alle Befehle</h2>
+<h3>Geld und Markt</h3>
+<table>
+  <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd"><code>/qol:balance</code></td><td>Dein Guthaben anzeigen.</td></tr>
+    <tr><td class="cmd"><code>/qol:prices [suchwort]</code></td><td>Preise anzeigen, optional gefiltert (z. B. <code>/qol:prices wood</code>).</td></tr>
+    <tr><td class="cmd"><code>/qol:market [item]</code></td><td>Marktstatus eines Items: Lagerbestand, Faktor, wie viel gekauft/verkauft wurde. Ohne Item: die 8 meistgehandelten Items.</td></tr>
+    <tr><td class="cmd"><code>/qol:sell &lt;item&gt; &lt;menge&gt;</code></td><td>Items aus dem Inventar verkaufen (1–10.000).</td></tr>
+    <tr><td class="cmd"><code>/qol:sellhand [menge]</code></td><td>Das Item in der Hand verkaufen – ohne Menge den ganzen Stack.</td></tr>
+    <tr><td class="cmd"><code>/qol:buy &lt;menge&gt; &lt;item&gt;</code></td><td>Items kaufen (1–10.000).</td></tr>
+    <tr><td class="cmd"><code>/qol:pay &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins an einen anderen Spieler überweisen, z. B. <code>/qol:pay Alex 12.50</code>.</td></tr>
+  </tbody>
+</table>
+
+<h3>Reisen</h3>
+<table>
+  <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd"><code>/qol:sethome</code></td><td>Setzt dein Home an deiner aktuellen Position.</td></tr>
+    <tr><td class="cmd"><code>/qol:home</code></td><td>Teleportiert dich zu deinem Home – auch aus einer anderen Welt.</td></tr>
+    <tr><td class="cmd"><code>/qol:setexpedition</code></td><td>Setzt einen zweiten Punkt (Expedition), z. B. für eine Farm weit weg.</td></tr>
+    <tr><td class="cmd"><code>/qol:expedition</code></td><td>Teleportiert dich zum Expeditionspunkt.</td></tr>
+    <tr><td class="cmd"><code>/qol:tpa &lt;spieler&gt;</code></td><td>Fragt einen Spieler, ob du zu ihm darfst. Die Anfrage gilt 2 Minuten.</td></tr>
+    <tr><td class="cmd"><code>/qol:tpaccept</code> / <code>/qol:tpdeny</code></td><td>Anfrage annehmen oder ablehnen.</td></tr>
+  </tbody>
+</table>
+
+<h3>Statistiken</h3>
+<table>
+  <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd"><code>/qol:top [kategorie]</code></td><td>Die Top 5: <code>blocks</code> (abgebaute Blöcke), <code>kills</code> (Mobs), <code>walk</code> (gelaufen), <code>pkills</code> (Spieler), <code>deaths</code> (Tode), <code>time</code> (Spielzeit).</td></tr>
+    <tr><td class="cmd"><code>/qol:stats [spieler]</code></td><td>Alle sechs Werte eines Spielers.</td></tr>
+  </tbody>
+</table>
+<p>Die Sidebar rechts zeigt automatisch die Top 10 und wechselt alle 10 Sekunden
+die Kategorie. Wer sie fest einstellen darf, regelt der Server-Admin.</p>
+
+<h3>Nur für Admins</h3>
+<table>
+  <thead><tr><th>Befehl</th><th>Was er macht</th></tr></thead>
+  <tbody>
+    <tr><td class="cmd"><code>/qol:grant &lt;spieler&gt; &lt;betrag&gt;</code></td><td>Coins vergeben oder abziehen (negativer Betrag). Wird im Log festgehalten.</td></tr>
+    <tr><td class="cmd"><code>/qol:marketreset JA</code></td><td>Notfall: Lager und Preis <strong>aller</strong> Items zurücksetzen. Sichert vorher eine Kopie.</td></tr>
+    <tr><td class="cmd"><code>/qol:board &lt;kategorie|auto|aus&gt;</code></td><td>Sidebar fest einstellen oder ausschalten.</td></tr>
+    <tr><td class="cmd"><code>/qol:selftest</code></td><td>Prüft die Rechenlogik des Markts (67 Tests).</td></tr>
+  </tbody>
+</table>
+<p style="color:var(--muted);font-size:14px">Diese Befehle funktionieren nur mit
+Admin-Rechten. Wenn du sie eingibst, passiert einfach nichts.</p>
+
+<h2><span class="num">4.</span> Wie der Markt funktioniert</h2>
+<p>Jedes der 1459 Items hat ein eigenes Lager und einen eigenen Preis.
+Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
+<code>2,00</code> doppelt so teuer, <code>0,50</code> halb so teuer.</p>
+
+<div class="grid g2">
+  <div class="card">
+    <h3 class="k-green">Du verkaufst viel</h3>
+    <p>Das Lager füllt sich → der Faktor sinkt → du bekommst weniger Coins pro Stück.
+    Ab einem vollen Lager (2000 Stück) nimmt der Markt gar nichts mehr an.</p>
+  </div>
+  <div class="card">
+    <h3 class="k-gold">Du kaufst viel</h3>
+    <p>Das Lager leert sich → der Faktor steigt → das Item wird teurer.
+    Sind nur noch 25 Stück da (Notreserve), kannst du nichts mehr kaufen
+    – der Markt wartet auf Nachschub.</p>
+  </div>
+</div>
+
+<h3>Beispiel Bamboo (Basiskauf 1,00 Coin)</h3>
+<table>
+  <thead><tr><th>Situation</th><th>Faktor</th><th>Kauf</th><th>Verkauf</th></tr></thead>
+  <tbody>
+    <tr><td>Lager voll (2000), niemand handelt</td><td>0,10</td><td class="k-gold">0,10</td><td class="k-green">0,05</td></tr>
+    <tr><td>Lager voll und viel verkauft</td><td>0,05</td><td class="k-gold">0,05</td><td class="k-green">0,02</td></tr>
+    <tr><td>Lager normal (500)</td><td>1,00</td><td class="k-gold">1,00</td><td class="k-green">0,50</td></tr>
+    <tr><td>Lager fast leer</td><td>3,00</td><td class="k-gold">3,00</td><td class="k-green">1,50</td></tr>
+  </tbody>
+</table>
+
+<h3>Was jede Minute automatisch passiert</h3>
+<ul>
+  <li><strong>Lager regeneriert:</strong> Der Bestand wandert langsam zurück auf
+  500. Nach 12 Stunden ist die Hälfte des Abstands
+  geschafft („Halbwertszeit“). Aus 2000 werden also nach 12 h
+  1250, nach
+  24 h 875 usw.</li>
+  <li><strong>Preis folgt dem Lager:</strong> mit 4 Stunden
+  Verzögerung – schnell genug, dass du es beim Handeln merkst.</li>
+  <li><strong>Nachfrage zählt mit:</strong> Wird ein Item viel gekauft, bleibt der
+  Preis eine Weile höher; wird es viel verkauft, länger niedriger.</li>
+</ul>
+
+<div class="note warn">
+  <strong>Verkaufspreis 0:</strong> Bei sehr billigen Items und vollem Lager kann
+  der Verkaufspreis auf 0,00 fallen. Dann sagt der Markt „zahlt derzeit nichts“
+  und du behältst deine Items. Das ist Absicht – so verschwinden keine Items
+  für umsonst.
+</div>
+
+<h2><span class="num">5.</span> Regeln</h2>
+<div class="grid g2">
+  <div class="card">
+    <h3 class="k-green">Erlaubt und gewollt</h3>
+    <ul>
+      <li>Farmen, abbauen, sammeln und verkaufen – so viel du willst.</li>
+      <li>Handeln mit anderen Spielern (auch über <code>/qol:pay</code>).</li>
+      <li>Preise beobachten und dann verkaufen, wenn sie hoch sind.</li>
+      <li>Items kaufen, die gerade billig sind, weil das Lager voll ist.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3 class="k-red">Nicht erlaubt</h3>
+    <ul>
+      <li>Bugs oder Dupes ausnutzen (z. B. Items doppelt erzeugen). Melde Fehler lieber.</li>
+      <li>Andere mit falschen Versprechungen um Coins bringen.</li>
+      <li>Den Markt mit Absicht kaputt machen (z. B. Lager mit Müll fluten, nur um andere zu ärgern).</li>
+      <li>Fremde Konten oder Namen benutzen.</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Technische Regeln für den Handel</h3>
+<ul>
+  <li>Menge pro Befehl: <strong>1 bis 10.000</strong>.</li>
+  <li>Nur <strong>einfache Items</strong>: keine umbenannten, keine verzauberten,
+  keine Werkzeuge oder Rüstung (die Haltbarkeit wäre nicht prüfbar).</li>
+  <li>Manche Items sind absichtlich nicht handelbar: Tränke, Spawn-Eier,
+  Admin-Blöcke und alles, was sich nicht eindeutig einem Preis zuordnen lässt.</li>
+  <li>Der Kauf wird abgelehnt, wenn dein Inventar nicht genug Platz hat –
+  abgebucht wird dann nichts.</li>
+  <li>Coins werden auf den Cent genau gespeichert, angezeigt mit zwei
+  Nachkommastellen (Komma oder Punkt sind beim Eingeben beide okay).</li>
+  <li>Überweisungen gehen von 0,01 bis 1.000.000,00 Coins; an dich selbst
+  überweisen geht nicht.</li>
+</ul>
+
+<h2><span class="num">6.</span> Gut zu wissen (FAQ)</h2>
+<details><summary>Warum bekomme ich für mein Item so wenig Coins?</summary>
+  <p>Weil schon viel davon im Marktlager liegt. Jeder Verkauf senkt den Preis.
+  Verkaufst du weniger oder wartest du, bis sich das Lager wieder leert, steigt
+  der Preis wieder.</p>
+</details>
+<details><summary>Warum nimmt der Markt meine Items nicht mehr?</summary>
+  <p>Das Lager ist voll (2000 Stück). Der Markt kauft erst wieder, wenn
+  der Bestand durch die Regeneration sinkt oder andere Spieler etwas davon kaufen.</p>
+</details>
+<details><summary>Warum steht da „Markt zahlt derzeit nichts“?</summary>
+  <p>Der Verkaufspreis ist auf 0,00 gefallen, weil viel zu viel davon da ist.
+  Deine Items bleiben im Inventar. Bei den meisten Items lohnt sich Warten mehr
+  als sofort zu verkaufen.</p>
+</details>
+<details><summary>Warum wurde mein Kauf abgelehnt?</summary>
+  <p>Meistens aus einem von drei Gründen: zu wenig Coins, das Inventar ist voll
+  (dann wird nichts abgebucht), oder das Lager hat nicht mehr genug für die
+  gewünschte Menge. Der Chat sagt dir, welcher Fall es war.</p>
+</details>
+<details><summary>Was bedeutet „Faktor 0,45“ genau?</summary>
+  <p>Dass die Preise gerade bei 45 % des Normalpreises liegen. Der Kaufpreis
+  wird aus Basispreis × Faktor berechnet und auf ganze Cent gerundet; der
+  Verkaufspreis ist die Hälfte davon, abgerundet.</p>
+</details>
+<details><summary>Bleiben meine Coins und das Lager bei einem Neustart erhalten?</summary>
+  <p>Ja. Coins, Lagerbestände und deine Home-/Expeditionspunkte werden in der
+  Welt gespeichert und sind nach einem Neustart wieder da.</p>
+</details>
+<details><summary>Wo sehe ich, wer was gehandelt hat?</summary>
+  <p>Auf der <a href="./">Preisliste</a>: Klick auf eine Zeile (oder Enter) und
+  du siehst die letzten erfolgreichen Käufe und Verkäufe dieses Items mit Zeit,
+  Spieler, Menge und Coins.</p>
+</details>
+
+<h2><span class="num">7.</span> Für Profis: die Formeln</h2>
+<details>
+  <summary>Wie genau rechnet der Markt? (aufklappen)</summary>
+  <p>Der Faktor entsteht aus zwei Teilen, die zwischen −1 und +1 liegen:</p>
+  <ul>
+    <li><strong>Lagerdruck</strong> = (Ziel − Bestand) / Ziel, begrenzt auf −1 … +1</li>
+    <li><strong>Nachfrage</strong> = (Käufe − Verkäufe) / typisches Volumen, begrenzt auf −1 … +1</li>
+    <li>Faktor-Ziel = 1 + 0.9 · Lagerdruck + 0.4 · Nachfrage,
+    begrenzt auf 0,05 … 3,00</li>
+    <li>Pro Transaktion ändert sich der Faktor höchstens um
+    10 % – deshalb gibt es keine Sprünge.</li>
+    <li>Kauf = max(1 Cent, Basispreis · Faktor), Verkauf = abgerundet(Kauf / 2).</li>
+  </ul>
+  <p>Bestand und Nachfrage werden gedämpft: Lager mit 12 h
+  Halbwertszeit, Nachfrage mit 12 h, der Faktor gleitet mit
+  4 h zum Ziel. Alles zusammen läuft jede Minute einmal.</p>
+  <p>Preisliste: 2026-10-21-3e61a9f0 mit 1459 Positionen. Auf der
+  <a href="./">Preisliste</a> stehen Basispreis und aktueller Serverpreis
+  nebeneinander.</p>
+</details>
+
+<h2><span class="num">8.</span> Kleines Wörterbuch</h2>
+<table>
+  <tbody>
+    <tr><td><strong>Coins</strong></td><td>Das Geld auf dem Server, gespeichert auf den Cent genau.</td></tr>
+    <tr><td><strong>Guthaben / Balance</strong></td><td>Wie viele Coins du gerade hast.</td></tr>
+    <tr><td><strong>Bestand / Lager</strong></td><td>Wie viele Stück eines Items der Markt gerade hat.</td></tr>
+    <tr><td><strong>Lagerziel</strong></td><td>500 Stück – der Normalzustand, zu dem das Lager zurückwandert.</td></tr>
+    <tr><td><strong>Faktor</strong></td><td>Preis-Multiplikator: 1,00 = normal, kleiner = billiger, größer = teurer.</td></tr>
+    <tr><td><strong>Notreserve</strong></td><td>25 Stück, die der Markt nicht verkauft, damit er nie leer ist.</td></tr>
+    <tr><td><strong>Stack</strong></td><td>Ein Stapel im Inventar, z. B. 64 Stück.</td></tr>
+    <tr><td><strong>Handel / Trade</strong></td><td>Ein Kauf oder Verkauf, der geklappt hat.</td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>Etwas klappt nicht?</strong> Schreib im Chat, was du eingegeben hast und
+  was passiert ist. Fehlermeldungen helfen, den Server besser zu machen – dafür
+  gibt es keinen Ärger.
+</div>
+
+</main>
+
+<footer>
+  Anleitung für den QoL-Markt auf <strong>minecraft-bedrock-19133</strong> ·
+  Preise: 2026-10-21-3e61a9f0 · 1459 Items ·
+  <a href="./">zur Preisliste</a><br>
+  Neu erzeugen: <code>node qol-pack/tools/guide-page.mjs</code>.
+</footer>
+
+</body>
+</html>
