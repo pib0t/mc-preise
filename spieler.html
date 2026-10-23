@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Spielerstatistiken, Kontostände und Transaktionsverlauf des Minecraft-Bedrock-Servers 19133.">
+<meta name="theme-color" content="#0f1115">
+<title>Spieler · Bedrock 19133</title>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --panel2: #1d222b; --line: #2a303c;
+    --text: #e7ebf3; --muted: #98a2b3; --gold: #f2c14e; --green: #55c57a;
+    --red: #e5595b; --blue: #6aa9ff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif; }
+  body { padding: 24px clamp(12px, 3vw, 40px) 64px; }
+  header { max-width: 1200px; margin: 0 auto 18px; }
+  nav { max-width: 1200px; margin: 0 auto 18px; display: flex; gap: 8px; flex-wrap: wrap;
+    font-size: 14px; }
+  nav a { color: var(--muted); text-decoration: none; padding: 8px 14px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+  nav a:hover { color: var(--text); border-color: var(--green); }
+  nav a[aria-current="page"] { color: #0f1115; background: var(--green);
+    border-color: var(--green); font-weight: 700; }
+  h1 { margin: 0 0 6px; font-size: clamp(20px, 3vw, 30px); letter-spacing: .2px; }
+  h1 span { color: var(--green); }
+  .sub { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 14px; min-width: 132px; }
+  .stat b { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: 12px; text-transform: uppercase;
+    letter-spacing: .6px; }
+  .note { max-width: 1200px; margin: 16px auto 0; padding: 12px 16px;
+    background: rgba(106,169,255,.08); border: 1px solid rgba(106,169,255,.3);
+    border-left: 3px solid var(--blue); border-radius: 8px; font-size: 13.5px;
+    color: #c9d6ea; line-height: 1.6; }
+  .toolbar { position: sticky; top: 0; z-index: 20; max-width: 1200px; margin: 20px auto 0;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    background: linear-gradient(var(--bg) 70%, transparent); padding: 10px 0; }
+  input[type="search"] { flex: 1 1 240px; min-width: 180px; padding: 10px 14px;
+    border-radius: 9px; border: 1px solid var(--line); background: var(--panel2);
+    color: var(--text); font-size: 14px; }
+  input[type="search"]:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+  .hint { color: var(--muted); font-size: 12.5px; }
+  .tablewrap { max-width: 1200px; margin: 10px auto 0; border: 1px solid var(--line);
+    border-radius: 12px; overflow: auto; background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th { position: sticky; top: 0; background: var(--panel2); z-index: 5;
+    text-align: left; padding: 10px 12px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--muted); white-space: nowrap;
+    border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; }
+  thead th[aria-sort="ascending"]::after { content: " ▲"; color: var(--green); }
+  thead th[aria-sort="descending"]::after { content: " ▼"; color: var(--green); }
+  tbody tr { border-bottom: 1px solid rgba(42,48,60,.6); cursor: pointer; }
+  tbody tr:hover { background: #1b2029; }
+  tbody tr:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+  td { padding: 9px 12px; white-space: nowrap; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .coins { color: var(--gold); font-weight: 600; }
+  .who { font-weight: 600; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line); margin-right: 7px; vertical-align: 1px; }
+  .dot.on { background: var(--green); box-shadow: 0 0 6px rgba(85,197,122,.8); }
+  .muted { color: var(--muted); }
+  dialog { border: 1px solid var(--line); border-radius: 14px; background: var(--panel);
+    color: var(--text); padding: 0; width: min(720px, calc(100vw - 24px));
+    max-height: calc(100vh - 48px); }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  .dhead { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .dhead h2 { margin: 0; font-size: 18px; }
+  .dbody { padding: 16px 18px; overflow: auto; max-height: calc(100vh - 180px); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin-bottom: 16px; }
+  .cell { background: var(--panel2); border: 1px solid var(--line); border-radius: 9px;
+    padding: 9px 12px; }
+  .cell span { display: block; color: var(--muted); font-size: 11.5px;
+    text-transform: uppercase; letter-spacing: .5px; }
+  .cell b { font-size: 15px; font-variant-numeric: tabular-nums; }
+  button.close { background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: 13px; }
+  button.close:hover { border-color: var(--red); color: var(--red); }
+  table.trades { font-size: 13px; }
+  table.trades th { cursor: default; }
+  table.trades td { padding: 7px 10px; }
+  .buy { color: var(--red); } .sell { color: var(--green); }
+  .empty { padding: 18px; color: var(--muted); font-size: 14px; }
+  footer { max-width: 1200px; margin: 28px auto 0; color: var(--muted); font-size: 12.5px;
+    line-height: 1.7; }
+  footer a { color: var(--green); }
+</style>
+</head>
+<body>
+<nav aria-label="Seiten">
+  <a href="./">Preisliste</a>
+  <a href="./anleitung.html">Anleitung</a>
+  <a href="./map/">Karte</a>
+  <a href="./spieler.html" aria-current="page">Spieler</a>
+</nav>
+<header>
+  <h1>Spieler <span>Bedrock 19133</span></h1>
+  <p class="sub">Statistiken, Kontostände und Transaktionen aller Spieler. Stand:
+    <span id="stand">lade …</span></p>
+  <div class="stats" id="kpi"></div>
+</header>
+<div class="note" id="hinweis" hidden></div>
+<div class="toolbar">
+  <input type="search" id="suche" placeholder="Spieler suchen …" aria-label="Spieler suchen">
+  <span class="hint" id="hint"></span>
+</div>
+<div class="tablewrap">
+  <table id="tabelle">
+    <thead><tr id="kopf"></tr></thead>
+    <tbody id="koerper"><tr><td class="empty">lade Daten …</td></tr></tbody>
+  </table>
+</div>
+<footer>
+  Aktualisierung: alle 15 s aus <code>players.json</code> (Server-Snapshot alle
+  10 Minuten), Transaktionen aus <code>trades.json</code>.
+  Coins werden in der Anzeige auf zwei Nachkommastellen gerundet.<br>
+  Zurück zur <a href="./">Preisliste</a> · <a href="./anleitung.html">Anleitung</a> ·
+  <a href="./map/">Karte</a>
+</footer>
+<dialog id="detail" aria-labelledby="dname">
+  <div class="dhead">
+    <h2 id="dname">Spieler</h2>
+    <button class="close" type="button" id="dschliessen">Schließen</button>
+  </div>
+  <div class="dbody" id="dbody"></div>
+</dialog>
+<script>
+"use strict";
+const EL = (id) => document.getElementById(id);
+const COLS = [
+  { key: "name",        label: "Spieler",       sort: (r) => r.name.toLowerCase(), text: true },
+  { key: "coins",       label: "Kontostand",    sort: (r) => r.coins },
+  { key: "blocks",      label: "Blöcke",        sort: (r) => r.blocks },
+  { key: "kills",       label: "Mobs",          sort: (r) => r.kills },
+  { key: "pkills",      label: "PvP",           sort: (r) => r.pkills },
+  { key: "deaths",      label: "Tode",          sort: (r) => r.deaths },
+  { key: "walk",        label: "Gelaufen",      sort: (r) => r.walk },
+  { key: "time",        label: "Spielzeit",     sort: (r) => r.time },
+  { key: "lastSeen",    label: "Zuletzt online", sort: (r) => r.lastSeen },
+  { key: "trades",      label: "Trades",        sort: (r) => r.trades }
+];
+const nf0 = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+const nf2 = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dtf = new Intl.DateTimeFormat("de-DE", { dateStyle: "short", timeStyle: "short", timeZone: "Europe/Berlin" });
+
+let players = [];
+let trades = {};
+let sortKey = "coins";
+let sortDir = -1;
+let failedTrades = 0;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function coins(cent) { return nf2.format((Number(cent) || 0) / 100); }
+// Trades aus trades.json stehen bereits in Coins (nicht Cent).
+function coinsRaw(v) { return nf2.format(Number(v) || 0); }
+function blocks(n) {
+  const v = Number(n) || 0;
+  if (v >= 10000) return (v / 1000).toFixed(1).replace(".", ",") + "k";
+  return nf0.format(v);
+}
+function playtime(min) {
+  const m = Math.max(0, Math.round(Number(min) || 0));
+  const h = Math.floor(m / 60), rest = m % 60;
+  if (h === 0) return rest + " min";
+  return h + " h " + String(rest).padStart(2, "0") + " min";
+}
+function ago(ts) {
+  const t = Number(ts) || 0;
+  if (!t) return "unbekannt";
+  const diff = Date.now() - t;
+  if (diff < 0) return dtf.format(new Date(t));
+  const min = Math.floor(diff / 60000);
+  if (min < 2) return "gerade eben";
+  if (min < 60) return "vor " + min + " min";
+  const h = Math.floor(min / 60);
+  if (h < 24) return "vor " + h + " h";
+  const d = Math.floor(h / 24);
+  if (d === 1) return "gestern";
+  if (d < 30) return "vor " + d + " Tagen";
+  return dtf.format(new Date(t));
+}
+function tradesOf(name) {
+  const out = [];
+  for (const [item, list] of Object.entries(trades.items || {})) {
+    if (!Array.isArray(list)) continue;
+    for (const t of list) if (t && t.p === name) out.push({ ...t, item });
+  }
+  out.sort((a, b) => b.t - a.t);
+  return out;
+}
+
+function renderKpi() {
+  const sum = players.reduce((a, r) => a + r.coins, 0);
+  const online = players.filter((r) => r.online).length;
+  const tradesN = players.reduce((a, r) => a + r.trades, 0);
+  const top = players.reduce((a, r) => (r.blocks > (a ? a.blocks : -1) ? r : a), null);
+  const kpi = [
+    ["Spieler", nf0.format(players.length)],
+    ["online", nf0.format(online)],
+    ["Coins im Umlauf", coins(sum)],
+    ["Transaktionen", nf0.format(tradesN)],
+    ["Meiste Blöcke", top ? esc(top.name) : "–"]
+  ];
+  EL("kpi").innerHTML = kpi.map(([span, b]) => '<div class="stat"><b>' + b + '</b><span>' + span + '</span></div>').join("");
+}
+
+function renderHead() {
+  EL("kopf").innerHTML = COLS.map((c) =>
+    '<th scope="col" data-key="' + c.key + '" tabindex="0"' +
+    (c.key === sortKey ? ' aria-sort="' + (sortDir === 1 ? "ascending" : "descending") + '"' : "") +
+    ">" + c.label + "</th>"
+  ).join("");
+}
+
+function visible() {
+  const q = EL("suche").value.trim().toLowerCase();
+  const list = players.filter((r) => !q || r.name.toLowerCase().includes(q));
+  const col = COLS.find((c) => c.key === sortKey) || COLS[1];
+  list.sort((a, b) => {
+    const av = col.sort(a), bv = col.sort(b);
+    if (av < bv) return -sortDir;
+    if (av > bv) return sortDir;
+    return a.name.localeCompare(b.name);
+  });
+  return list;
+}
+
+function renderTable() {
+  const list = visible();
+  EL("hint").textContent = list.length + " von " + players.length + " Spielern";
+  if (!list.length) {
+    EL("koerper").innerHTML = '<tr><td class="empty">keine Treffer</td></tr>';
+    return;
+  }
+  EL("koerper").innerHTML = list.map((r) =>
+    '<tr tabindex="0" data-name="' + esc(r.name) + '">' +
+      '<td class="who"><span class="dot' + (r.online ? " on" : "") + '"></span>' + esc(r.name) + "</td>" +
+      '<td class="num coins">' + coins(r.coins) + "</td>" +
+      '<td class="num">' + blocks(r.blocks) + "</td>" +
+      '<td class="num">' + nf0.format(r.kills) + "</td>" +
+      '<td class="num">' + nf0.format(r.pkills) + "</td>" +
+      '<td class="num">' + nf0.format(r.deaths) + "</td>" +
+      '<td class="num">' + blocks(r.walk) + "</td>" +
+      '<td class="num">' + playtime(r.time) + "</td>" +
+      '<td class="muted" title="' + (r.lastSeen ? esc(dtf.format(new Date(r.lastSeen))) : "") + '">' +
+        (r.online ? '<span style="color:var(--green)">jetzt</span>' : esc(ago(r.lastSeen))) + "</td>" +
+      '<td class="num">' + nf0.format(r.trades) + "</td>" +
+    "</tr>"
+  ).join("");
+}
+
+function openDetail(name) {
+  const r = players.find((p) => p.name === name);
+  if (!r) return;
+  const list = tradesOf(name);
+  const bought = list.filter((t) => t.k === "buy");
+  const sold = list.filter((t) => t.k !== "buy");
+  const spend = bought.reduce((a, t) => a + (Number(t.c) || 0), 0);
+  const earn = sold.reduce((a, t) => a + (Number(t.c) || 0), 0);
+  const cells = [
+    ["Kontostand", coins(r.coins)],
+    ["Blöcke abgebaut", nf0.format(r.blocks)],
+    ["Mobs besiegt", nf0.format(r.kills)],
+    ["Spieler besiegt", nf0.format(r.pkills)],
+    ["Tode", nf0.format(r.deaths)],
+    ["Gelaufen", blocks(r.walk) + " Blöcke"],
+    ["Spielzeit", playtime(r.time)],
+    ["Zuletzt online", r.online ? "jetzt online" : dtf.format(new Date(r.lastSeen))],
+    ["Käufe", bought.length + " (" + coinsRaw(spend) + " Coins)"],
+    ["Verkäufe", sold.length + " (" + coinsRaw(earn) + " Coins)"]
+  ];
+  EL("dname").textContent = r.name;
+  const rows = list.slice(0, 200).map((t) =>
+    "<tr><td>" + esc(dtf.format(new Date(t.t))) + "</td>" +
+    "<td>" + (t.k === "buy" ? '<span class="buy">Kauf</span>' : '<span class="sell">Verkauf</span>') + "</td>" +
+    "<td>" + esc(String(t.item).replace(/^minecraft:/, "")) + "</td>" +
+    '<td class="num">' + nf0.format(t.a) + "</td>" +
+    '<td class="num">' + coinsRaw(t.c) + "</td>" +
+    '<td class="num muted">' + coinsRaw(t.u) + "</td></tr>"
+  ).join("");
+  EL("dbody").innerHTML =
+    '<div class="grid">' + cells.map(([s, b]) =>
+      '<div class="cell"><span>' + s + "</span><b>" + b + "</b></div>").join("") + "</div>" +
+    (list.length
+      ? '<table class="trades"><thead><tr><th>Zeit</th><th>Art</th><th>Item</th><th>Menge</th><th>Summe</th><th>Stück</th></tr></thead><tbody>' +
+        rows + "</tbody></table>" +
+        (list.length > 200 ? '<p class="hint">nur die letzten 200 Transaktionen</p>' : "")
+      : '<p class="empty">keine Transaktionen erfasst' +
+        (failedTrades ? ' – <code>trades.json</code> konnte nicht geladen werden' : "") + "</p>");
+  const d = EL("detail");
+  if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
+  EL("dschliessen").focus();
+}
+
+async function loadPlayers() {
+  try {
+    const res = await fetch("./players.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const d = await res.json();
+    players = (d.rows || []).map((r) => ({
+      name: r[0], coins: Number(r[1]) || 0, blocks: Number(r[2]) || 0,
+      kills: Number(r[3]) || 0, walk: Number(r[4]) || 0, pkills: Number(r[5]) || 0,
+      deaths: Number(r[6]) || 0, time: Number(r[7]) || 0, lastSeen: Number(r[8]) || 0,
+      online: Number(r[9]) === 1
+    }));
+    const counts = {};
+    for (const list of Object.values(trades.items || {})) {
+      if (!Array.isArray(list)) continue;
+      for (const t of list) if (t && t.p) counts[t.p] = (counts[t.p] || 0) + 1;
+    }
+    for (const p of players) p.trades = counts[p.name] || 0;
+    EL("stand").textContent = dtf.format(new Date(Number(d.ts) || Number(d.written) || Date.now()));
+    EL("hinweis").hidden = true;
+    renderKpi();
+    renderHead();
+    renderTable();
+  } catch (e) {
+    EL("hinweis").hidden = false;
+    EL("hinweis").textContent = "players.json konnte nicht geladen werden (" + e.message +
+      "). Die Seite braucht die Datei aus dem Preise-Repo; offline zeigt sie nichts an.";
+    if (!players.length) EL("koerper").innerHTML = '<tr><td class="empty">keine Daten</td></tr>';
+  }
+}
+
+async function loadTrades() {
+  if (failedTrades > 3) return;
+  try {
+    const res = await fetch("./trades.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    trades = await res.json();
+    failedTrades = 0;
+    for (const p of players) {
+      let n = 0;
+      for (const list of Object.values(trades.items || {})) {
+        if (!Array.isArray(list)) continue;
+        for (const t of list) if (t && t.p === p.name) n += 1;
+      }
+      p.trades = n;
+    }
+    renderKpi();
+    renderTable();
+  } catch { failedTrades += 1; }
+}
+
+EL("suche").addEventListener("input", renderTable);
+EL("kopf").addEventListener("click", (ev) => {
+  const th = ev.target.closest("th");
+  if (!th) return;
+  const key = th.dataset.key;
+  if (key === sortKey) sortDir = -sortDir; else { sortKey = key; sortDir = key === "name" ? 1 : -1; }
+  renderHead();
+  renderTable();
+});
+EL("kopf").addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" && ev.key !== " ") return;
+  const th = ev.target.closest("th");
+  if (!th) return;
+  ev.preventDefault();
+  th.click();
+});
+EL("koerper").addEventListener("click", (ev) => {
+  const tr = ev.target.closest("tr[data-name]");
+  if (tr) openDetail(tr.dataset.name);
+});
+EL("koerper").addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter") return;
+  const tr = ev.target.closest("tr[data-name]");
+  if (tr) openDetail(tr.dataset.name);
+});
+EL("dschliessen").addEventListener("click", () => EL("detail").close());
+
+loadPlayers().then(loadTrades);
+setInterval(() => { loadPlayers().then(loadTrades); }, 15000);
+</script>
+</body>
+</html>
