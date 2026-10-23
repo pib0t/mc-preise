@@ -270,7 +270,7 @@ Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
   geschafft („Halbwertszeit“). Aus 2000 werden also nach 12 h
   1250, nach
   24 h 875 usw.</li>
-  <li><strong>Preis folgt dem Lager:</strong> mit 4 Stunden
+  <li><strong>Preis folgt dem Lager:</strong> mit 0 Stunden
   Verzögerung – schnell genug, dass du es beim Handeln merkst.</li>
   <li><strong>Nachfrage zählt mit:</strong> Wird ein Item viel gekauft, bleibt der
   Preis eine Weile höher; wird es viel verkauft, länger niedriger.</li>
@@ -371,8 +371,9 @@ Der Preis heißt <strong>Faktor</strong>: <code>1,00</code> ist normal,
     <li>Kauf = max(1 Cent, Basispreis · Faktor), Verkauf = abgerundet(Kauf / 2).</li>
   </ul>
   <p>Bestand und Nachfrage werden gedämpft: Lager mit 12 h
-  Halbwertszeit, Nachfrage mit 12 h, der Faktor gleitet mit
-  4 h zum Ziel. Alles zusammen läuft jede Minute einmal.</p>
+  Halbwertszeit, Nachfrage mit 12 h. Der Faktor folgt dem
+  Ziel sofort.
+  Alles zusammen läuft jede Minute einmal.</p>
   <p>Preisliste: 2026-10-21-3e61a9f0 mit 1459 Positionen. Auf der
   <a href="./">Preisliste</a> stehen Basispreis und aktueller Serverpreis
   nebeneinander.</p>
